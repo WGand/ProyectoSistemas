@@ -10,7 +10,7 @@
 #include <sys/time.h>
 #define BUFLEN 20
 static int se = 1;
-static long childs = 0;
+static long hijos = 0;
 
 void iniciar(int sig)
 {
@@ -47,9 +47,7 @@ int pruebaConexion(int sock, unsigned char* buf)
 
 int conexion(int sock, struct sockaddr_in server)
 {
-        //Connect to remote server
     if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0) {
-        //perror("connect failed. Error");
         return 1;
     }
     else
@@ -68,7 +66,7 @@ int main(){
 
     while(se){
 
-        childs++;
+        hijos++;
         if ((process = fork()) == 0)
         {
             break;
@@ -77,9 +75,6 @@ int main(){
 
     if(process == 0)
     {
-        struct timeval timeout;
-        timeout.tv_sec = 0.0001;
-        timeout.tv_usec = 0;
         int conectado = 2;
         int conex = 1;
         struct sockaddr_in server;
@@ -93,7 +88,6 @@ int main(){
             if(conex == 1)
             {
                 sock = crearSocket();
-                setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
                 conectado = conexion(sock, server);
             }
             if (conectado == 1)
@@ -115,9 +109,9 @@ int main(){
         pid_t pid;
         long conectados = 0;
         long desconectados = 0;
-        childs = childs + padre;
+        hijos = hijos + padre;
         puts("Calculando.");
-        for(long i = padre + 1; i<=childs; i++)
+        for(long i = padre + 1; i<=hijos; i++)
         {
             if(pid = waitpid(i, &status, WNOHANG) != -1)
             {
@@ -134,10 +128,10 @@ int main(){
                 }
             }
         }
-        printf("hijos: %ld \n", childs - padre);
+        printf("hijos: %ld \n", hijos - padre);
         printf("Conectados: %ld \n", conectados);
-        printf("Desconectados: %ld \n", desconectados);
-        printf("Procesos con salida no exitosa: %ld \n", childs - padre - conectados - desconectados);
+        printf("No establecieron conexion: %ld \n", desconectados);
+        printf("Procesos con salida no exitosa: %ld \n", hijos - padre - conectados - desconectados);
         kill(0, SIGKILL);
         _exit(0);
     }
