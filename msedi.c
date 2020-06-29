@@ -38,7 +38,9 @@ int pruebaConexion(int sock, unsigned char* buf)
 {
     int respuesta;
     if ((respuesta = recv(sock , buf , 1 , 0)) < 0)
+    {
         return 1;
+    }
     else if (respuesta == 0) 
     {
         return 0;
@@ -47,14 +49,14 @@ int pruebaConexion(int sock, unsigned char* buf)
 
 int conexion(int sock, struct sockaddr_in server)
 {
-    if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0) {
+    if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
+    {
         return 1;
     }
     else
     {
         return 0;
     }
-
 }
 
 int main(){
@@ -63,7 +65,6 @@ int main(){
     long padre = getpid();
     pid_t process;
     int status = 0;
-
     while(se){
 
         hijos++;
@@ -117,7 +118,7 @@ int main(){
             {
                 if(WIFEXITED(status))
                 {
-                    if(status == 0)
+                    if(WEXITSTATUS(status) == 0)
                     {
                         conectados++;
                     }
@@ -135,5 +136,4 @@ int main(){
         kill(0, SIGKILL);
         _exit(0);
     }
-
 }
