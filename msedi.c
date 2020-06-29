@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h> /* for pid_t */
-#include <sys/wait.h> /* for wait */
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <signal.h> 
