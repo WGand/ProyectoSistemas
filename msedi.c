@@ -111,7 +111,8 @@ int main(){
         long conectados = 0;
         long desconectados = 0;
         hijos = hijos + padre;
-        puts("Calculando.");
+        puts("No se pueden establecer nuevas conexiones con el servidor, terminando el ataque...");
+        puts("Calculando:");
         for(long i = padre + 1; i<=hijos; i++)
         {
             if(pid = waitpid(i, &status, WNOHANG) != -1)
